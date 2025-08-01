@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Edit2, Trash2, ExternalLink, Tag } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, ExternalLink, Tag, Zap, Globe, Star } from 'lucide-react';
 import './App.css';
 
 // Define proper TypeScript interfaces
@@ -29,16 +29,16 @@ const App: React.FC = () => {
   useEffect(() => {
     try {
       const savedLinks = localStorage.getItem('linksVault');
-      console.log('Loading from localStorage:', savedLinks); // Debug log
+      console.log('Loading from localStorage:', savedLinks);
       if (savedLinks && savedLinks !== 'undefined' && savedLinks !== '[]') {
         const parsedLinks = JSON.parse(savedLinks);
-        console.log('Parsed links:', parsedLinks); // Debug log
+        console.log('Parsed links:', parsedLinks);
         setLinks(parsedLinks);
       }
       setIsLoaded(true);
     } catch (error) {
       console.error('Error loading from localStorage:', error);
-      localStorage.removeItem('linksVault'); // Clear corrupted data
+      localStorage.removeItem('linksVault');
       setIsLoaded(true);
     }
   }, []);
@@ -47,7 +47,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (isLoaded) {
       try {
-        console.log('Saving to localStorage:', links); // Debug log
+        console.log('Saving to localStorage:', links);
         localStorage.setItem('linksVault', JSON.stringify(links));
       } catch (error) {
         console.error('Error saving to localStorage:', error);
@@ -107,12 +107,10 @@ const App: React.FC = () => {
     };
 
     if (editingLink) {
-      // Update existing link
       setLinks(prev => prev.map(link => 
         link.id === editingLink.id ? newLink : link
       ));
     } else {
-      // Add new link
       setLinks(prev => [newLink, ...prev]);
     }
 
@@ -154,135 +152,147 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="app-container">
+      {/* Animated Background */}
+      <div className="cyber-background">
+        <div className="grid-overlay"></div>
+        <div className="floating-orbs">
+          <div className="orb orb-1"></div>
+          <div className="orb orb-2"></div>
+          <div className="orb orb-3"></div>
+          <div className="orb orb-4"></div>
+        </div>
+      </div>
+
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Links Vault</h1>
-              <p className="text-gray-600 mt-1">Organize and manage your favorite links</p>
+      <header className="futuristic-header">
+        <div className="header-content">
+          <div className="header-left">
+            <div className="logo-container">
+              <Zap className="logo-icon" />
+              <div className="logo-text">
+                <h1 className="main-title">Codetribe taks 2</h1>
+                <div className="subtitle">highligh the rectangle above try me!</div>
+              </div>
             </div>
-            <button
-              onClick={openAddModal}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              Add Link
-            </button>
           </div>
+          <button onClick={openAddModal} className="add-button">
+            <Plus className="button-icon" />
+            <span>Initialize Link</span>
+            <div className="button-glow"></div>
+          </button>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="main-content">
         {/* Search Bar */}
-        <div className="mb-8">
-          <div className="relative max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <div className="search-container">
+          <div className="search-wrapper">
+            <Search className="search-icon" />
             <input
               type="text"
-              placeholder="Search links, tags, descriptions..."
+              placeholder="Scan neural pathways..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
+              className="search-input"
             />
+            <div className="search-glow"></div>
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="mb-8 flex flex-wrap gap-4 text-sm text-gray-600">
-          <span>{links.length} total links</span>
+        {/* Stats Panel */}
+        <div className="stats-panel">
+          <div className="stat-item">
+            <Globe className="stat-icon" />
+            <span className="stat-value">{links.length}</span>
+            <span className="stat-label">Neural Links</span>
+          </div>
           {searchTerm && (
-            <span>{filteredLinks.length} matching results</span>
+            <div className="stat-item">
+              <Star className="stat-icon" />
+              <span className="stat-value">{filteredLinks.length}</span>
+              <span className="stat-label">Matches Found</span>
+            </div>
           )}
         </div>
 
         {/* Links Grid */}
         {filteredLinks.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-              <ExternalLink className="w-8 h-8 text-gray-400" />
+          <div className="empty-state">
+            <div className="empty-icon-container">
+              <ExternalLink className="empty-icon" />
+              <div className="icon-pulse"></div>
             </div>
-            <h3 className="text-xl font-medium text-gray-900 mb-2">
-              {searchTerm ? 'No matching links found' : 'No links saved yet'}
+            <h3 className="empty-title">
+              {searchTerm ? 'Neural Scan Complete' : 'Initialize Your Digital Nexus'}
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="empty-description">
               {searchTerm 
-                ? 'Try adjusting your search terms' 
-                : 'Start building your links collection by adding your first link'
+                ? 'No matching neural patterns detected. Adjust scan parameters.' 
+                : 'Begin by establishing your first quantum link connection to the digital matrix.'
               }
             </p>
             {!searchTerm && (
-              <button
-                onClick={openAddModal}
-                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-              >
-                <Plus className="w-5 h-5 mr-2" />
-                Add Your First Link
+              <button onClick={openAddModal} className="primary-cta">
+                <Plus className="button-icon" />
+                <span>Create First Link</span>
+                <div className="button-energy"></div>
               </button>
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredLinks.map(link => (
-              <div key={link.id} className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200">
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
+          <div className="links-grid">
+            {filteredLinks.map((link, index) => (
+              <div key={link.id} className="link-card" style={{'--delay': `${index * 0.1}s`} as React.CSSProperties}>
+                <div className="card-glow"></div>
+                <div className="card-content">
+                  <div className="card-header">
                     <h3 
-                      className="font-semibold text-gray-900 cursor-pointer hover:text-blue-600 transition-colors duration-200 flex-1 mr-2"
+                      className="link-title"
                       onClick={() => openLink(link.url)}
                     >
                       {link.title}
                     </h3>
-                    <div className="flex items-center gap-2">
+                    <div className="card-actions">
                       <button
                         onClick={() => openEditModal(link)}
-                        className="p-1 text-gray-400 hover:text-blue-600 transition-colors duration-200"
-                        title="Edit link"
+                        className="action-button edit-button"
+                        title="Modify neural pattern"
                       >
-                        <Edit2 className="w-4 h-4" />
+                        <Edit2 className="action-icon" />
                       </button>
                       <button
                         onClick={() => deleteLink(link.id)}
-                        className="p-1 text-gray-400 hover:text-red-600 transition-colors duration-200"
-                        title="Delete link"
+                        className="action-button delete-button"
+                        title="Terminate connection"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="action-icon" />
                       </button>
                     </div>
                   </div>
                   
-                  <div className="flex items-center text-sm text-gray-500 mb-3">
-                    <ExternalLink className="w-4 h-4 mr-2" />
-                    <span 
-                      className="cursor-pointer hover:text-blue-600 transition-colors duration-200 truncate"
-                      onClick={() => openLink(link.url)}
-                    >
-                      {formatUrl(link.url)}
-                    </span>
+                  <div className="link-url" onClick={() => openLink(link.url)}>
+                    <ExternalLink className="url-icon" />
+                    <span className="url-text">{formatUrl(link.url)}</span>
                   </div>
 
                   {link.description && (
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {link.description}
-                    </p>
+                    <p className="link-description">{link.description}</p>
                   )}
 
                   {link.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {link.tags.map((tag: string, index: number) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md"
-                        >
-                          <Tag className="w-3 h-3 mr-1" />
+                    <div className="tags-container">
+                      {link.tags.map((tag: string, tagIndex: number) => (
+                        <span key={tagIndex} className="tag-chip">
+                          <Tag className="tag-icon" />
                           {tag}
                         </span>
                       ))}
                     </div>
                   )}
                 </div>
+                <div className="card-border"></div>
               </div>
             ))}
           </div>
@@ -291,17 +301,23 @@ const App: React.FC = () => {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-6">
-                {editingLink ? 'Edit Link' : 'Add New Link'}
-              </h2>
+        <div className="modal-overlay">
+          <div className="modal-backdrop" onClick={closeModal}></div>
+          <div className="modal-container">
+            <div className="modal-glow"></div>
+            <div className="modal-content">
+              <div className="modal-header">
+                <h2 className="modal-title">
+                  {editingLink ? 'Modify Neural Link' : 'Initialize New Connection'}
+                </h2>
+                <div className="modal-subtitle">Configure quantum parameters</div>
+              </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
-                    Title *
+              <div className="form-container">
+                <div className="input-group">
+                  <label htmlFor="title" className="input-label">
+                    <span>Neural Identifier</span>
+                    <span className="required-indicator">*</span>
                   </label>
                   <input
                     type="text"
@@ -309,15 +325,17 @@ const App: React.FC = () => {
                     name="title"
                     value={formData.title}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                    placeholder="Enter link title"
+                    className="cyber-input"
+                    placeholder="Enter neural designation"
                     required
                   />
+                  <div className="input-glow"></div>
                 </div>
 
-                <div>
-                  <label htmlFor="url" className="block text-sm font-medium text-gray-700 mb-2">
-                    URL *
+                <div className="input-group">
+                  <label htmlFor="url" className="input-label">
+                    <span>Quantum Address</span>
+                    <span className="required-indicator">*</span>
                   </label>
                   <input
                     type="url"
@@ -325,15 +343,16 @@ const App: React.FC = () => {
                     name="url"
                     value={formData.url}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                    placeholder="https://example.com"
+                    className="cyber-input"
+                    placeholder="https://matrix.nexus"
                     required
                   />
+                  <div className="input-glow"></div>
                 </div>
 
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
-                    Description
+                <div className="input-group">
+                  <label htmlFor="description" className="input-label">
+                    <span>Data Signature</span>
                   </label>
                   <textarea
                     id="description"
@@ -341,14 +360,15 @@ const App: React.FC = () => {
                     value={formData.description}
                     onChange={handleInputChange}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 resize-none"
-                    placeholder="Optional description"
+                    className="cyber-textarea"
+                    placeholder="Optional neural pathway description"
                   />
+                  <div className="input-glow"></div>
                 </div>
 
-                <div>
-                  <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-2">
-                    Tags
+                <div className="input-group">
+                  <label htmlFor="tags" className="input-label">
+                    <span>Classification Tags</span>
                   </label>
                   <input
                     type="text"
@@ -356,26 +376,28 @@ const App: React.FC = () => {
                     name="tags"
                     value={formData.tags}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200"
-                    placeholder="work, development, tools (comma-separated)"
+                    className="cyber-input"
+                    placeholder="neural, quantum, matrix (comma-separated)"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
+                  <div className="input-glow"></div>
+                  <p className="input-hint">Separate multiple tags with commas</p>
                 </div>
 
-                <div className="flex gap-3 pt-4">
+                <div className="modal-actions">
                   <button
                     type="button"
                     onClick={saveLink}
-                    className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+                    className="primary-button"
                   >
-                    {editingLink ? 'Update Link' : 'Save Link'}
+                    <span>{editingLink ? 'Update Matrix' : 'Establish Link'}</span>
+                    <div className="button-energy"></div>
                   </button>
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="flex-1 bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition-colors duration-200 font-medium"
+                    className="secondary-button"
                   >
-                    Cancel
+                    <span>Abort Sequence</span>
                   </button>
                 </div>
               </div>
@@ -383,8 +405,6 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
-
-
     </div>
   );
 };
