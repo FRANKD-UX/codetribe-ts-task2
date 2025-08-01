@@ -2,10 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, ExternalLink, Tag } from 'lucide-react';
 import './App.css';
 
+// Define proper TypeScript interfaces
+interface Link {
+  id: number;
+  title: string;
+  url: string;
+  description: string;
+  tags: string[];
+  createdAt: string;
+}
+
 const App: React.FC = () => {
-  const [links, setLinks] = useState<any[]>([]);
+  const [links, setLinks] = useState<Link[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingLink, setEditingLink] = useState<any>(null);
+  const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [formData, setFormData] = useState({
     title: '',
@@ -16,16 +27,33 @@ const App: React.FC = () => {
 
   // Load links from localStorage on component mount
   useEffect(() => {
-    const savedLinks = localStorage.getItem('linksVault');
-    if (savedLinks) {
-      setLinks(JSON.parse(savedLinks));
+    try {
+      const savedLinks = localStorage.getItem('linksVault');
+      console.log('Loading from localStorage:', savedLinks); // Debug log
+      if (savedLinks && savedLinks !== 'undefined' && savedLinks !== '[]') {
+        const parsedLinks = JSON.parse(savedLinks);
+        console.log('Parsed links:', parsedLinks); // Debug log
+        setLinks(parsedLinks);
+      }
+      setIsLoaded(true);
+    } catch (error) {
+      console.error('Error loading from localStorage:', error);
+      localStorage.removeItem('linksVault'); // Clear corrupted data
+      setIsLoaded(true);
     }
   }, []);
 
-  // Save links to localStorage whenever links array changes
+  // Save links to localStorage whenever links array changes (but only after initial load)
   useEffect(() => {
-    localStorage.setItem('linksVault', JSON.stringify(links));
-  }, [links]);
+    if (isLoaded) {
+      try {
+        console.log('Saving to localStorage:', links); // Debug log
+        localStorage.setItem('linksVault', JSON.stringify(links));
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+      }
+    }
+  }, [links, isLoaded]);
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -44,7 +72,7 @@ const App: React.FC = () => {
   };
 
   // Open modal for editing existing link
-  const openEditModal = (link: any) => {
+  const openEditModal = (link: Link) => {
     setFormData({
       title: link.title,
       url: link.url,
@@ -69,7 +97,7 @@ const App: React.FC = () => {
       return;
     }
 
-    const newLink = {
+    const newLink: Link = {
       id: editingLink ? editingLink.id : Date.now(),
       title: formData.title.trim(),
       url: formData.url.trim(),
@@ -132,7 +160,7 @@ const App: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Codetribe task 2 vault</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Links Vault</h1>
               <p className="text-gray-600 mt-1">Organize and manage your favorite links</p>
             </div>
             <button
