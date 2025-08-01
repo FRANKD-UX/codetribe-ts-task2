@@ -1,9 +1,12 @@
+/* FILE: src/App.css */
+/* Replace ALL the content in your App.css file with this code */
+
 .App {
   margin: 0;
   padding: 0;
 }
 
-
+/* Additional utility classes for the component */
 .min-h-screen {
   min-height: 100vh;
 }
@@ -539,5 +542,50 @@
 @media (min-width: 1024px) {
   .lg\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Additional responsive styles */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .max-w-6xl {
+    max-width: 100% !important;
+  }
+  
+  .px-4 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  .py-8 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .px-4 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  
+  .gap-6 {
+    gap: 1rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.875rem !important;
   }
 }

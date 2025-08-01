@@ -1,6 +1,3 @@
-// FILE: src/App.tsx
-// Replace ALL the content in your App.tsx file with this code
-
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, Edit2, Trash2, ExternalLink, Tag } from 'lucide-react';
 import './App.css';
@@ -359,51 +356,7 @@ const App: React.FC = () => {
         </div>
       )}
 
-      <style jsx>{`
-        .line-clamp-3 {
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 3;
-          overflow: hidden;
-        }
 
-        @media (max-width: 640px) {
-          .grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .max-w-6xl {
-            max-width: 100%;
-          }
-          
-          .px-4 {
-            padding-left: 1rem;
-            padding-right: 1rem;
-          }
-          
-          .py-8 {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .px-4 {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-          }
-          
-          .gap-6 {
-            gap: 1rem;
-          }
-          
-          .text-3xl {
-            font-size: 1.875rem;
-          }
-        }
-      `}</style>
     </div>
   );
 };
