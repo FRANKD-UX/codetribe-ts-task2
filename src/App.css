@@ -1,12 +1,8 @@
-/* FILE: src/App.css */
-/* Replace ALL the content in your App.css file with this code */
-
 .App {
   margin: 0;
   padding: 0;
 }
 
-/* Additional utility classes for the component */
 .min-h-screen {
   min-height: 100vh;
 }
