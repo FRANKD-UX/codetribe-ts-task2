@@ -1,7 +1,7 @@
 
-Good day this is the git hub pages hosted link for the codetribets task 2
+Good day this is the  hosted link for the codetribets task 2
 
-https://frankd-ux.github.io/codetribe-ts-task2/ 
+https://codetribe-ts-task2.vercel.app/
 
 
 
