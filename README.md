@@ -123,17 +123,7 @@ The application uses browser localStorage for data persistence:
 2. Run: `vercel` in project directory
 3. Follow the prompts
 
-### GitHub Pages
-1. Install gh-pages: `npm install --save-dev gh-pages`
-2. Add to package.json:
-   ```json
-   "homepage": "https://yourusername.github.io/react-links-vault",
-   "scripts": {
-     "predeploy": "npm run build",
-     "deploy": "gh-pages -d build"
-   }
-   ```
-3. Run: `npm run deploy`
+
 
 ## Configuration
 
